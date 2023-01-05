@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Copyright © 2023 Jakub Wilk <jwilk@jwilk.net>
+# SPDX-License-Identifier: MIT
+
+set -e -u
+
+kprintf()
+{
+    msg=$(printf "$@")
+    printf 'crash-handler: %s\n' "$msg" > /dev/kmsg
+}
+
+kprintf 'nargs = %d' $#
+declare -i n=0
+for arg
+do
+    n+=1
+    kprintf 'arg[%d] = %q' "$n" "$arg"
+done
+nbytes=$(wc -c)
+kprintf 'stdin = %d bytes' "$nbytes"
+
+# vim:ts=4 sts=4 sw=4 et
